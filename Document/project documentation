@@ -1,0 +1,127 @@
+# Project Documentation: Secure Note-Taking App
+
+## Introduction
+The Secure Note-Taking App is a backend system designed to provide secure authentication and note management features. Users can register, log in, and manage their notes while ensuring data security through authentication and authorization mechanisms.
+
+## Features
+- User authentication (registration, login, password update, account deletion)
+- JWT-based authentication for security
+- CRUD operations for notes (create, read, update, delete)
+- Secure MongoDB database connection
+- Middleware for protected routes
+- API error handling
+
+## Project Structure
+```
+Backend/
+│-- config/
+│   ├── dbConnection.js   # Database connection file
+│-- middleware/
+│   ├── fetchuser.js      # Middleware for authentication
+│-- models/
+│   ├── User.js           # User schema
+│   ├── Note.js           # Note schema
+│-- routes/
+│   ├── auth.js           # Authentication routes
+│   ├── notes.js          # Note management routes
+│-- .env                  # Environment variables
+│-- index.js              # Main server file
+│-- package.json          # Dependencies and scripts
+```
+
+## Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-repo.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd Backend
+   ```
+3. Install dependencies:
+   ```bash
+   npm install
+   ```
+4. Create a `.env` file and add:
+   ```env
+   MONGO_URI=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret
+   ```
+5. Start the backend server:
+   ```bash
+   npm start
+   ```
+
+## API Endpoints
+
+### Authentication APIs
+
+1. **Register a New User**
+   - **Endpoint:** `POST /api/auth/createuser`
+   - **Description:** Registers a new user.
+   
+2. **Login User**
+   - **Endpoint:** `POST /api/auth/login`
+   - **Description:** Authenticates a user and returns a JWT token.
+   
+3. **Get User Details**
+   - **Endpoint:** `POST /api/auth/getuser`
+   - **Description:** Retrieves authenticated user details.
+
+4. **Update Password**
+   - **Endpoint:** `PUT /api/auth/update-password`
+   - **Description:** Allows a user to update their password.
+
+5. **Delete Account**
+   - **Endpoint:** `DELETE /api/auth/deleteaccount`
+   - **Description:** Deletes a user account.
+
+### Notes APIs
+
+1. **Create a Note**
+   - **Endpoint:** `POST /api/notes/addnote`
+   - **Description:** Creates a new note.
+
+2. **Fetch All Notes**
+   - **Endpoint:** `GET /api/notes/fetchnotes`
+   - **Description:** Retrieves all saved notes.
+
+3. **Update a Note**
+   - **Endpoint:** `PUT /api/notes/updatenote/:id`
+   - **Description:** Updates an existing note by ID.
+
+4. **Delete a Note**
+   - **Endpoint:** `DELETE /api/notes/deletenote/:id`
+   - **Description:** Deletes a specific note by ID.
+
+## Database Schema
+
+### User Model
+```javascript
+const mongoose = require('mongoose');
+
+const UserSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true }
+}, { timestamps: true });
+
+module.exports = mongoose.model('User', UserSchema);
+```
+
+### Note Model
+```javascript
+const mongoose = require('mongoose');
+
+const NoteSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  title: { type: String, required: true },
+  content: { type: String, required: true }
+}, { timestamps: true });
+
+module.exports = mongoose.model('Note', NoteSchema);
+```
+
+## Conclusion
+This note-taking application integrates modern web technologies to provide a secure and efficient way for users to manage their notes. With JWT authentication, CRUD functionality, and a MongoDB database, it ensures data integrity and security. The application can be further enhanced with additional features like note sharing, categories, and cloud storage integration.
+
